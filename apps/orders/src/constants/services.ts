@@ -1,0 +1,1 @@
+export const INVOICING_SERVICE = 'INVOICING'
