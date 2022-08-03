@@ -4,7 +4,6 @@ import { OrdersRepository } from './orders.repository';
 import { INVOICING_SERVICE } from './constants/services';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import {Order} from "./schemas/order.schema";
 
 @Injectable()
 export class OrdersService {
@@ -13,7 +12,7 @@ export class OrdersService {
     @Inject(INVOICING_SERVICE) private invoicingClient: ClientProxy,
   ) {}
 
-  async createOrder(dto: CreateOrderRequestDto):Promise<Order> {
+  async createOrder(dto: CreateOrderRequestDto, authentication: string) {
     const session = await this.ordersRepository.startTransaction();
 
     try {
@@ -21,17 +20,18 @@ export class OrdersService {
       await lastValueFrom(
         this.invoicingClient.emit('order_created', {
           dto,
+          Authentication: authentication,
         }),
       );
       await session.commitTransaction();
       return order;
-    } catch (exception) {
+    } catch (error) {
       await session.abortTransaction();
-      throw exception;
+      throw error;
     }
   }
 
   async getOrders() {
-    return this.ordersRepository.findAll({});
+    return this.ordersRepository.find({});
   }
 }

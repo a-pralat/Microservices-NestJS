@@ -1,5 +1,4 @@
 import {
-  IsEmail,
   IsNotEmpty,
   IsPhoneNumber,
   IsPositive,
@@ -13,9 +12,6 @@ export class CreateOrderRequestDto {
 
   @IsPositive()
   price: number;
-
-  @IsEmail()
-  email: string;
 
   @IsPhoneNumber()
   phoneNumber: string;

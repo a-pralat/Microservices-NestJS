@@ -10,9 +10,6 @@ export class Order extends AbstractDocument {
   price: number;
 
   @Prop()
-  email: string;
-
-  @Prop()
   phoneNumber: string;
 }
 

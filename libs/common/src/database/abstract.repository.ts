@@ -30,7 +30,7 @@ export abstract class AbstractRepository<TDoc extends AbstractDocument> {
     return (await createdDocument.save(options)).toJSON() as TDoc;
   }
 
-  async findAll(filterQuery: FilterQuery<TDoc>) {
+  async find(filterQuery: FilterQuery<TDoc>) {
     return this.model.find(filterQuery, {}, { lean: true });
   }
 
